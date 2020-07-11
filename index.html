@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevFest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Covered+By+Your+Grace&family=Righteous&display=swap"
+    rel="stylesheet">
+</head>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    color: white;
+    font-size: 60px;
+    font-family: 'Righteous', cursive;
+    text-align: center;
+  }
+
+  .light {
+    color: #03199d;
+  }
+
+  .dark {
+    color: #1e3b41;
+  }
+
+  .time {
+    color: black;
+    opacity: .5;
+    font-family: 'Covered By Your Grace', cursive;
+  }
+
+  .logo {
+    text-align: center;
+    object-fit: cover;
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .logo img {
+    width: 70px;
+    margin-bottom: 1.4rem;
+  }
+
+  img.devfest-logo {
+    width: 250px;
+  }
+</style>
+
+<body>
+  <div class="logo">
+    <img src="./logo.png" alt="DevSoc">
+    <img class="devfest-logo" src="./devFest-logo.png" alt="DevFest 1.0">
+  </div>
+  <div id="clockdiv">
+    <div class="time">Time Remaining</div>
+    <span class="hours dark"></span> <span class="dark">:</span>
+    <span class="minutes light"></span> <span class="light">:</span>
+    <span class="seconds light"></span>
+  </div>
+</body>
+<script>
+  function getTimeRemaining(endtime) {
+    const total = Date.parse(endtime) - Date.parse(new Date());
+    const seconds = Math.floor((total / 1000) % 60);
+    const minutes = Math.floor((total / 1000 / 60) % 60);
+    const hours = Math.floor((total / (1000 * 60 * 60)));
+
+    return {
+      total,
+      hours,
+      minutes,
+      seconds
+    };
+  }
+
+  function initializeClock(id, endtime) {
+    const clock = document.getElementById(id);
+    const hoursSpan = clock.querySelector('.hours');
+    const minutesSpan = clock.querySelector('.minutes');
+    const secondsSpan = clock.querySelector('.seconds');
+
+    function updateClock() {
+      const t = getTimeRemaining(endtime);
+
+      hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+      minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+      secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+      if (t.total <= 0) {
+        clearInterval(timeinterval);
+      }
+    }
+
+    updateClock();
+    const timeinterval = setInterval(updateClock, 1000);
+  }
+
+  const deadline = new Date(Date.parse(new Date("July 12, 2020 11:45:00")));
+  initializeClock('clockdiv', deadline);
+</script>
+
+</html>
